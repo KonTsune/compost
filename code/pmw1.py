@@ -12,10 +12,10 @@ p = GPIO.PWM(PWM, 100)
 p.start(0)
 
 
-for i in range(10, 101, 10):
+for i in range(20, 101, 20):
 	p.ChangeDutyCycle(i)
 	print(i)
-	time.sleep(2)
+	time.sleep(5)
 
 p.ChangeDutyCycle(0)
 print('done')

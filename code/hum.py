@@ -53,7 +53,7 @@ GPIO.setup(SPICLK, GPIO.OUT)
 GPIO.setup(SPICS, GPIO.OUT)
 
 # adc #0
-adc_pin = 0;
+adc_pin = 0
 
 while True:
     # read the analog pin
