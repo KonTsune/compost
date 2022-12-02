@@ -1,3 +1,5 @@
+# 土壌水分をセンシングし連続で表示する
+
 import time
 import subprocess
 from gpiozero import MCP3002
