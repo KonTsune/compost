@@ -43,4 +43,5 @@ def read_hum():
 # データ送信と情報表示
 result = subprocess.run(['python3', '/home/compost/compost/code/hard-data-transmission/main.py', 'add', '-i', '{}'.format(read_temp()), '{}'.format(read_hum())])
 print(result)
+
 print("温度:", read_temp(), "土壌水分:", read_hum())
