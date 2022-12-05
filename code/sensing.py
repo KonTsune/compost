@@ -54,6 +54,19 @@ print("温度:", temp, "土壌水分:", hum)
 
 # 温度保存
 btemp = [temp]
+ave = 0
+
+def writep(filename, w, mes):
+    with open('{}'.format(filename), 'wb') as p:
+        pickle.dump(w, p)
+        print("{}".format(mes))
+
+def readp(filename, r, mes):
+    with open('{}'.format(filename), 'rb') as p:
+        a = pickle.load(p)
+        print("{}".format(mes))
+        return a
+
 
 filepath = "/home/compost/compost/code/pic.bin"
 print(os.path.exists(filepath))
@@ -77,7 +90,19 @@ else:
     with open('pic.bin', 'wb') as p:
         pickle.dump(btemp, p)
         print("ぴっく作った", btemp)
+    mix_list = [1]
+    with open('mix.bin', 'wb') as p:
+        pickle.dump(mix_list, p)
+        print("mix_list作った")
 
 # 以下撹拌条件設定
 if temp <= ave-5:
     print("撹拌")
+    mix_list = [1]
+    with open('mix.bin', 'wb') as p:
+        pickle.dump(mix_list, p)
+else:
+    print("撹拌してない")
+    mix_list = [0]
+    with open('mix.bin', 'wb') as p:
+        pickle.dump(mix_list, p)
