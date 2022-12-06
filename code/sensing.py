@@ -8,8 +8,7 @@ from gpiozero import MCP3002
 
 from sample import pmw_simple
 
-#初期設定
-
+#PMW初期設定
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(13, GPIO.OUT)
 
@@ -43,7 +42,6 @@ def read_temp():
         temp = float(temp_string) / 1000.0
         return temp
 
-
 # 以下土壌水分センシング
 Vref = 3.3
 
@@ -53,13 +51,13 @@ def read_hum():
     hum = float(round(sen0193.value * Vref * 100,2))
     return hum
 
-# データ送信と情報表示
-'''
-result = subprocess.run(['python3', '/home/compost/compost/code/hard-data-transmission/main.py', 'add', '-i', '{}'.format(read_temp()), '{}'.format(read_hum())])
-print(result)
-'''
+#温度と土壌水分確定
 temp = read_temp()
 hum = read_hum()
+
+# データ送信と情報表示
+result = subprocess.run(['python3', '/home/compost/compost/code/hard-data-transmission/main.py', 'add', '-i', '{}'.format(temp), '{}'.format(hum)])
+print(result)
 
 print("温度:", temp, "土壌水分:", hum)
 
@@ -88,12 +86,12 @@ def temp_stack():
             print("4-1撹拌")
             pmw_simple.pmw()
             mix_list = [1]
-            with open('mix.bin', 'wb') as p:
+            with open('/home/compost/compost/code/mix.bin', 'wb') as p:
                 pickle.dump(mix_list, p)
         else:
             print("4-2撹拌してない")
             mix_list = [0]
-            with open('mix.bin', 'wb') as p:
+            with open('/home/compost/compost/code/mix.bin', 'wb') as p:
                 pickle.dump(mix_list, p)
     else:
         btemp.append(temp)
@@ -104,12 +102,12 @@ def temp_stack():
 filepath = "/home/compost/compost/code/pic.bin"
 print(os.path.exists(filepath))
 if os.path.exists(filepath) == True:
-    with open('pic.bin', 'rb') as p:
+    with open('/home/compost/compost/code/pic.bin', 'rb') as p:
         btemp = pickle.load(p)
         print("1-1蓄積温度", btemp)
         ave = sum(btemp) / len(btemp)
         print("1-1平均", ave)
-        with open('mix.bin', 'rb') as p:
+        with open('/home/compost/compost/code/mix.bin', 'rb') as p:
             mix = pickle.load(p)
             print("mix_list:", mix[0])
             if mix[0] == 1:
@@ -118,15 +116,15 @@ if os.path.exists(filepath) == True:
             else:
                 print("2-2")
                 temp_stack()
-    with open('pic.bin', 'wb') as p:
+    with open('/home/compost/compost/code/pic.bin', 'wb') as p:
         pickle.dump(btemp, p)
         print("0書き込んだ")
 else:
-    with open('pic.bin', 'wb') as p:
+    with open('/home/compost/compost/code/pic.bin', 'wb') as p:
         pickle.dump(btemp, p)
         print("1-2ぴっく作った", btemp)
     mix_list = [1]
-    with open('mix.bin', 'wb') as p:
+    with open('/home/compost/compost/code/mix.bin', 'wb') as p:
         pickle.dump(mix_list, p)
         print("1-2mix_list作った",mix_list)
     print("撹拌")
