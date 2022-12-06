@@ -8,29 +8,29 @@ PWM = 13
 
 GPIO.setup(PWM, GPIO.OUT)
 
-p = GPIO.PWM(PWM, 500)
-p.start(0)
+def pmw():
+	p = GPIO.PWM(PWM, 500)
+	p.start(0)
 
-l = []
+	l = []
 
-for i in range(0, 1000, 1):
-    l.append(i)
+	for i in range(0, 1000, 1):
+		l.append(i)
 
-for i in range(1000, -1, -1):
-    l.append(i)
+	for i in range(1000, -1, -1):
+		l.append(i)
 
-for i in l:
-	power = i / 10
-	if i != 1000:
-		p.ChangeDutyCycle(power)
-		time.sleep(0.01)
+	for i in l:
+		power = i / 10
+		if i != 1000:
+			p.ChangeDutyCycle(power)
+			time.sleep(0.01)
 
-	else:
-		p.ChangeDutyCycle(power)
-		time.sleep(10)
+		else:
+			p.ChangeDutyCycle(power)
+			time.sleep(10)
 
-
-p.ChangeDutyCycle(0)
-print('done')
+	p.ChangeDutyCycle(0)
+	print('done')
 
 GPIO.cleanup(PWM)

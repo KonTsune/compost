@@ -2,9 +2,20 @@ import glob
 import os
 import subprocess
 import pickle
-
-from time import sleep
+import time
+import RPi.GPIO as GPIO
 from gpiozero import MCP3002
+
+from sample import pmw_simple
+
+#初期設定
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(13, GPIO.OUT)
+
+PWM = 13
+
+GPIO.setup(PWM, GPIO.OUT)
 
 # 以下温度センシング
 os.system('modprobe w1-gpio')
@@ -24,7 +35,7 @@ def read_temp_raw():
 def read_temp():
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
-        sleep(0.2)
+        time.sleep(0.2)
         lines = read_temp_raw()
     equals_pos = lines[1].find('t=')
     if equals_pos != -1:
@@ -75,6 +86,7 @@ def temp_stack():
         # 以下撹拌条件設定
         if temp <= ave-5:
             print("4-1撹拌")
+            pmw_simple.pmw()
             mix_list = [1]
             with open('mix.bin', 'wb') as p:
                 pickle.dump(mix_list, p)
@@ -87,6 +99,7 @@ def temp_stack():
         btemp.append(temp)
         print("3-2追加",btemp)
         print("撹拌")
+        pmw_simple.pmw()
 
 filepath = "/home/compost/compost/code/pic.bin"
 print(os.path.exists(filepath))
@@ -117,3 +130,7 @@ else:
         pickle.dump(mix_list, p)
         print("1-2mix_list作った",mix_list)
     print("撹拌")
+    pmw_simple.pmw()
+
+#撹拌の締め
+GPIO.cleanup(PWM)
