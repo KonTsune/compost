@@ -67,42 +67,53 @@ def readp(filename, r, mes):
         print("{}".format(mes))
         return a
 
+def temp_stack():
+    if len(btemp) == 5:
+        btemp.pop(0)
+        btemp.append(temp)
+        print("3-1ポップして追加",btemp)
+        # 以下撹拌条件設定
+        if temp <= ave-5:
+            print("4-1撹拌")
+            mix_list = [1]
+            with open('mix.bin', 'wb') as p:
+                pickle.dump(mix_list, p)
+        else:
+            print("4-2撹拌してない")
+            mix_list = [0]
+            with open('mix.bin', 'wb') as p:
+                pickle.dump(mix_list, p)
+    else:
+        btemp.append(temp)
+        print("3-2追加",btemp)
+        print("撹拌")
 
 filepath = "/home/compost/compost/code/pic.bin"
 print(os.path.exists(filepath))
 if os.path.exists(filepath) == True:
     with open('pic.bin', 'rb') as p:
         btemp = pickle.load(p)
-        print("前回までの温度", btemp)
+        print("1-1蓄積温度", btemp)
         ave = sum(btemp) / len(btemp)
-        print("前回までの平均", ave)
-        if len(btemp) == 5:
-            btemp.pop(0)
-            btemp.append(temp)
-            print(1,btemp)
-        else:
-            btemp.append(temp)
-            print(2,btemp)
+        print("1-1平均", ave)
+        with open('mix.bin', 'rb') as p:
+            mix = pickle.load(p)
+            print("mix_list:", mix[0])
+            if mix[0] == 1:
+                print("2-1")
+                temp_stack()
+            else:
+                print("2-2")
+                temp_stack()
     with open('pic.bin', 'wb') as p:
         pickle.dump(btemp, p)
-        print("書き込んだ")
+        print("0書き込んだ")
 else:
     with open('pic.bin', 'wb') as p:
         pickle.dump(btemp, p)
-        print("ぴっく作った", btemp)
+        print("1-2ぴっく作った", btemp)
     mix_list = [1]
     with open('mix.bin', 'wb') as p:
         pickle.dump(mix_list, p)
-        print("mix_list作った")
-
-# 以下撹拌条件設定
-if temp <= ave-5:
+        print("1-2mix_list作った",mix_list)
     print("撹拌")
-    mix_list = [1]
-    with open('mix.bin', 'wb') as p:
-        pickle.dump(mix_list, p)
-else:
-    print("撹拌してない")
-    mix_list = [0]
-    with open('mix.bin', 'wb') as p:
-        pickle.dump(mix_list, p)
