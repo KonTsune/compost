@@ -8,14 +8,6 @@ from gpiozero import MCP3002
 
 from sample import pmw_simple
 
-#PMW初期設定
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(13, GPIO.OUT)
-
-PWM = 13
-
-GPIO.setup(PWM, GPIO.OUT)
-
 # 以下温度センシング
 os.system('modprobe w1-gpio')
 os.system('modprobe w1-therm')
@@ -129,6 +121,3 @@ else:
         print("1-2mix_list作った",mix_list)
     print("撹拌")
     pmw_simple.pmw()
-
-#撹拌の締め
-GPIO.cleanup(PWM)
