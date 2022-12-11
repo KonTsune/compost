@@ -27,9 +27,12 @@ def pmw():
 
 		else:
 			p.ChangeDutyCycle(power)
-			time.sleep(10)
+			time.sleep(12)
 
 	p.ChangeDutyCycle(0)
 	print('done')
-	
+
 	GPIO.cleanup(PWM)
+
+if __name__ == "_main_":
+	pmw()

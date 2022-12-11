@@ -23,7 +23,7 @@ def read_temp_raw():
     return lines
 
 # 温度(temp)を返す
-def read_temp():
+def read_temp():                                                                                                                                                            
     lines = read_temp_raw()
     while lines[0].strip()[-3:] != 'YES':
         time.sleep(0.2)

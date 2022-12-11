@@ -10,6 +10,6 @@ try:
         sen0193 = MCP3002(channel=0)
         hum = round(sen0193.value * Vref * 100,2)
         print(str(hum))
-        time.sleep(1)
+        time.sleep(5)
 except: KeyboardInterrupt
 subprocess.call('clear')
