@@ -35,4 +35,4 @@ def pmw():
 	GPIO.cleanup(PWM)
 
 if __name__ == "_main_":
-	pmw()
+ 	pmw()
